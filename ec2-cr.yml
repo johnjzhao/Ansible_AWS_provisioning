@@ -1,0 +1,24 @@
+---
+- name: Create Ec2 instances
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+  # Block is a Group of Tasks combined together
+  - name: Create EC2 Block
+    block: 
+
+      - name: Launch ec2 instances
+        ec2:
+          region: us-west-1
+          key_name: johnz 
+          group: sg-00ca7e711a5d0d5b6
+          instance_type: t2.micro
+          image: ami-0deeb28c68562f8ff
+          count: 1
+          instance_tags:
+            name: localhost
+            os: ubuntu
+          vpc_subnet_id: subnet-0bb905f3c02639251
+          assign_public_ip: yes
+

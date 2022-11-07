@@ -1,0 +1,18 @@
+---
+# Static hard-coded variables (change these as needed)
+app_name: k8sbapp # Can be changed if using with a different app
+ec2_al2_image_id: ami-0deeb28c68562f8ff # Current AMI ID for Amazon Linux 2
+my_ip: 192.168.75.30 # IP of home or work address to restrict access in security rules
+route53_zone: sunvalle.lab # Name of DNS domain set up in Route 53 for this app
+vpc_id: vpc-3fe5f25d # VPC ID for use with this app
+vpc_subnet_id_1: subnet-0bb905f3c02639251 # Main subnet for use with this app
+vpc_subnet_id_2: subnet-0de29e5aaecacfc41 # Secondary subnet, additionally required for ELB
+# Dynamic variables which get updated automatically from playbooks
+ec2_sg_app_id:
+ec2_sg_lb_id:
+ec2_staging_ami_id:
+ec2_staging_instance_id:
+ec2_staging_instance_public_dns:
+elb_dns:
+elb_tg_arn:
+elb_zone_id:

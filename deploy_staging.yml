@@ -1,0 +1,57 @@
+---
+- name: Deploy app on Staging instance
+  vars:
+    ansible_ssh_private_key_file: etc/ec2_key.pem
+  hosts: tag_Environment_Staging
+  remote_user: ec2-user
+  tasks:
+
+  - name: Import variables
+    include_vars: etc/variables.yml
+
+  - name: Update OS
+    become: yes
+    yum:
+      name: "*"
+      state: latest
+
+  - name: Install git
+    become: yes
+    yum:
+      name: git-core
+      state: latest
+
+  - name: Create webapp folder
+    become: yes
+    file:
+      path: /opt/webapp
+      state: directory
+      owner: ec2-user
+      group: ec2-user
+
+  - name: Get app from GitHub
+    git:
+      repo: "https://github.com/johnjzhao/webapp.git"
+      dest: /opt/webapp
+      force: yes
+
+  - name: Copy systemd unit file to correct location
+    become: yes
+    copy:
+      remote_src: yes
+      src: /opt/webapp/webapp.service
+      dest: /etc/systemd/system/webapp.service
+      owner: root
+      group: root
+
+  - name: Reload systemd
+    become: yes
+    systemd:
+      daemon_reload: yes
+
+  - name: Enable and start service for app
+    become: yes
+    service:
+      name: webapp
+      enabled: yes
+      state: restarted
